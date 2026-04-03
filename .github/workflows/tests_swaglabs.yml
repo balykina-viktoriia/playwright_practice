@@ -22,7 +22,7 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install pytest-playwright pytest-html
-          playwright install --with-deps chronium
+          playwright install --with-deps chromium
 
       - name: Run tests 
         run: pytest saucedemo/tests/test_checkout.py --html=report.html
