@@ -5,8 +5,14 @@ class CartPage:
 
     def __init__(self, page: Page):
         self.page = page
-        self.cart_item = page.locator("[data-test='inventory-item-name']")
-        self.checkout_button = page.get_by_role("button", name="Checkout")
+
+    @property
+    def cart_item(self):
+        return self.page.locator("[data-test='inventory-item-name']")
+
+    @property
+    def checkout_button(self):
+        return self.page.get_by_role("button", name="Checkout")
 
     def expect_on_cart_page(self):
         expect(self.page).to_have_url(self.CART_URL)

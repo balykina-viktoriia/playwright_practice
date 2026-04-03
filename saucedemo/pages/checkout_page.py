@@ -6,13 +6,33 @@ class CheckoutPage:
     COMPLETE_URL = "https://www.saucedemo.com/checkout-complete.html"
     def __init__(self, page: Page):
         self.page = page
-        self.first_name_input = page.get_by_placeholder("First Name")
-        self.last_name_input = page.get_by_placeholder("Last Name")
-        self.zip_code_input = page.get_by_placeholder("Zip/Postal Code")
-        self.continue_button = page.get_by_role("button", name="Continue")
-        self.finish_button = page.get_by_role("button", name="Finish")
-        self.complete_page = page.locator("[data-test='complete-header']")
-        self.error_problem_user = page.locator("[data-test='error']")
+
+    @property
+    def first_name_input(self):
+        return self.page.get_by_placeholder("First Name")
+
+    @property
+    def last_name_input(self):
+        return self.page.get_by_placeholder("Last Name")
+
+    @property
+    def zip_code_input(self):
+        return self.page.get_by_placeholder("Zip/Postal Code")
+
+    @property
+    def continue_button(self):
+        return self.page.get_by_role("button", name="Continue")
+
+    @property
+    def finish_button(self):
+        return self.page.get_by_role("button", name="Finish")
+
+    @property
+    def complete_page(self):
+        return self.page.locator("[data-test='complete-header']")
+    @property
+    def error_problem_user(self):
+        return self.page.locator("[data-test='error']")
 
     def expect_on_checkout_page(self):
         expect(self.page).to_have_url(self.URL)
