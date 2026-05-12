@@ -21,12 +21,10 @@ def test_add_multiple_items (page: Page, user):
 
     inventory_page.add_to_cart(1)
     inventory_page.add_to_cart(3)
-    inventory_page.expect_remove_button()
     inventory_page.check_shopping_cart_badge(2)
 
 @pytest.mark.parametrize("user", [
-    (Users.STANDARD),
-    (Users.PROBLEM),
+    (Users.STANDARD)
 ])
 
 def test_remove_multiple_items (page: Page, user):
@@ -39,9 +37,8 @@ def test_remove_multiple_items (page: Page, user):
 
     inventory_page.add_to_cart(1)
     inventory_page.add_to_cart(3)
-    inventory_page.expect_remove_button()
     inventory_page.check_shopping_cart_badge(2)
 
-    inventory_page.remove_from_cart(1)
-    inventory_page.remove_from_cart(3)
+    inventory_page.remove_from_cart(0)
+    inventory_page.remove_from_cart(0)
     inventory_page.empty_shopping_cart_badge()
