@@ -9,8 +9,8 @@ def test_checkout_flow(page: Page):
     # Login
     page.goto("https://www.saucedemo.com/")
     expect(page).to_have_url("https://www.saucedemo.com/")
-    page.get_by_placeholder("Username").fill("standard_user")
-    page.get_by_placeholder("Password").fill("secret_sauce")
+    page.get_by_placeholder("Username").fill("locked_out_user")
+    page.get_by_placeholder("Password").fill("secret_sauces")
     page.get_by_role("button", name="Login").click()
 
     # Add item to cart

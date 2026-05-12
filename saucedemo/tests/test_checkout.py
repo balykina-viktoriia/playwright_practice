@@ -20,9 +20,9 @@ def test_checkout_flow(page: Page, user, checkout_method):
 
     inventory_page = InventoryPage(page)
 
-    inventory_page.add_to_cart()
+    inventory_page.add_to_cart(0)
     inventory_page.expect_remove_button()
-    inventory_page.check_shopping_cart_badge()
+    inventory_page.check_shopping_cart_badge(1)
     inventory_page.go_to_cart()
 
     cart_page = CartPage(page)
