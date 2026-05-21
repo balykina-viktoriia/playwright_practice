@@ -17,31 +17,16 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+      - name: Build Docker image
+        run: docker build -t playwright-tests .
 
-      - name: Cache
-        uses: actions/cache@v5.0.5
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          
+      - name: Run tests in container
+        run: docker run --rm -v ${{ github.workspace }}/reports:/app/reports playwright-tests
 
-      - name: Install Dependencies
-        run: |
-          pip install -r requirements.txt
-          playwright install --with-deps chromium
-
-      - name: Run tests 
-        run: pytest saucedemo/tests --html=report.html
-
-      - name: Upload Test Reports
+      - name: Upload test report
+        if: always()
         uses: actions/upload-artifact@v4
-        with: 
+        with:
           name: test-report
-          path: report.html
-      - name: Run Hello World
-        run: echo Hello World
+          path: reports/
       
