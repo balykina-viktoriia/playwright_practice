@@ -1,12 +1,8 @@
-from playwright.sync_api import Page, expect
+from saucedemo.pages.base_page import BasePage
 
-class LoginPage:
+
+class LoginPage(BasePage):
     URL = "https://www.saucedemo.com/"
-    INVENTORY_URL = "https://www.saucedemo.com/inventory.html"
-    ERROR_LOCKED_OUT = "Epic sadface: Sorry, this user has been locked out."
-    def __init__(self, page: Page):
-        self.page = page
-        #Locators
 
     @property
     def username_input(self):
@@ -32,6 +28,4 @@ class LoginPage:
         self.password_input.fill(password)
         self.login_button.click()
 
-    def expect_on_inventory_page(self):
-        expect(self.page).to_have_url(self.INVENTORY_URL)
 

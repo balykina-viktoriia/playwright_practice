@@ -1,10 +1,9 @@
-from playwright.sync_api import Page, expect
+from playwright.sync_api import expect
+from saucedemo.pages.base_page import BasePage
 
-class CartPage:
-    CART_URL = "https://www.saucedemo.com/cart.html"
 
-    def __init__(self, page: Page):
-        self.page = page
+class CartPage(BasePage):
+    URL = "https://www.saucedemo.com/cart.html"
 
     @property
     def cart_item(self):
@@ -15,7 +14,7 @@ class CartPage:
         return self.page.get_by_role("button", name="Checkout")
 
     def expect_on_cart_page(self):
-        expect(self.page).to_have_url(self.CART_URL)
+        expect(self.page).to_have_url(self.URL)
 
     def check_cart_item(self):
         expect(self.cart_item).to_be_visible()

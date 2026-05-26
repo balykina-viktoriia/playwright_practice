@@ -1,42 +1,24 @@
 import pytest
-from playwright.sync_api import Page, expect
-from saucedemo.test_data import Users
-from saucedemo.pages.login_page import LoginPage
-from saucedemo.pages.inventory_page import InventoryPage
+from saucedemo.test_data import Users, InventoryItems
+
 
 @pytest.mark.parametrize("user", [
-    (Users.STANDARD),
-    (Users.PROBLEM),
+    pytest.param(Users.STANDARD, id="standard_user"),
+    pytest.param(Users.PROBLEM, id="problem_user"),
 ])
+def test_add_multiple_items(login_as, user):
+    inventory_page = login_as(user)
 
-def test_add_multiple_items (page: Page, user):
-
-    login_page = LoginPage(page)
-
-    login_page.navigate()
-    login_page.login(**user)
-    login_page.expect_on_inventory_page()
-
-    inventory_page = InventoryPage(page)
-
-    inventory_page.add_to_cart(1)
-    inventory_page.add_to_cart(3)
+    inventory_page.add_to_cart(InventoryItems.BIKE_LIGHT)
+    inventory_page.add_to_cart(InventoryItems.FLEECE_JACKET)
     inventory_page.check_shopping_cart_badge(2)
 
-@pytest.mark.parametrize("user", [
-    (Users.STANDARD)
-])
 
-def test_remove_multiple_items (page: Page, user):
-    login_page = LoginPage(page)
-    login_page.navigate()
-    login_page.login(**user)
-    login_page.expect_on_inventory_page()
+def test_remove_multiple_items(logged_in_page):
+    inventory_page = logged_in_page
 
-    inventory_page = InventoryPage(page)
-
-    inventory_page.add_to_cart(1)
-    inventory_page.add_to_cart(3)
+    inventory_page.add_to_cart(InventoryItems.BIKE_LIGHT)
+    inventory_page.add_to_cart(InventoryItems.FLEECE_JACKET)
     inventory_page.check_shopping_cart_badge(2)
 
     inventory_page.remove_from_cart(0)

@@ -1,11 +1,12 @@
-from playwright.sync_api import Page, expect
+from playwright.sync_api import expect
+from saucedemo.pages.base_page import BasePage
 
-class CheckoutPage:
+
+class CheckoutPage(BasePage):
     URL = "https://www.saucedemo.com/checkout-step-one.html"
     CHECKOUT_URL = "https://www.saucedemo.com/checkout-step-two.html"
     COMPLETE_URL = "https://www.saucedemo.com/checkout-complete.html"
-    def __init__(self, page: Page):
-        self.page = page
+    CHECKOUT_COMPLETE = "Thank you for your order!"
 
     @property
     def first_name_input(self):
@@ -31,7 +32,7 @@ class CheckoutPage:
     def complete_page(self):
         return self.page.locator("[data-test='complete-header']")
     @property
-    def error_problem_user(self):
+    def error_message(self):
         return self.page.locator("[data-test='error']")
 
     def expect_on_checkout_page(self):
@@ -43,19 +44,15 @@ class CheckoutPage:
         self.zip_code_input.fill(zip_code)
         self.continue_button.click()
 
-    def checkout_overview(self):
+    def expect_on_step_two_page(self):
         expect(self.page).to_have_url(self.CHECKOUT_URL)
+
+    def finish_checkout(self):
         self.finish_button.click()
 
     def checkout_success(self):
         expect(self.page).to_have_url(self.COMPLETE_URL)
-        expect(self.complete_page).to_have_text("Thank you for your order!")
+        expect(self.complete_page).to_have_text(self.CHECKOUT_COMPLETE)
 
-    def problem_user_checkout(self, first_name, last_name, zip_code):
-        self.first_name_input.fill(first_name)
-        self.last_name_input.fill(last_name)
-        self.zip_code_input.fill(zip_code)
-        self.continue_button.click()
-        expect(self.error_problem_user).to_have_text("Error: Last Name is required")
 
 
